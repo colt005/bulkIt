@@ -26,8 +26,8 @@ type httpClient struct {
 }
 
 /// Create an FileSave object which takes in an http Client to make requests and an integer value which controls the number of threads to be fired.
-/// If `c` is nil, default http.Client will be assigned.
-/// If `maxThreads` is 0 then `maxThreads` will default to 30
+// If `c` is nil, default http.Client will be assigned.
+// If `maxThreads` is 0 then `maxThreads` will default to 30
 func NewBulkIt(c *http.Client, maxThreads int) *bulkItClient {
 	if c == nil {
 		c = &http.Client{}
