@@ -1,4 +1,4 @@
-# bulkIt
+# bulkIt [![GoDoc](https://godoc.org/github.com/natefinch/godocgo?status.png)]([https://godoc.org/github.com/natefinch/godocgo](https://pkg.go.dev/github.com/colt005/bulkIt@v1.0.0))
 
 
 ## About The Package
