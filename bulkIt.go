@@ -16,19 +16,19 @@ import (
 	"github.com/zenthangplus/goccm"
 )
 
-type BulkIt struct {
-	client     *HTTPClient
+type bulkItClient struct {
+	client     *httpClient
 	maxThreads int
 }
 
-type HTTPClient struct {
+type httpClient struct {
 	client *http.Client
 }
 
 /// Create an FileSave object which takes in an http Client to make requests and an integer value which controls the number of threads to be fired.
 /// If `c` is nil, default http.Client will be assigned.
 /// If `maxThreads` is 0 then `maxThreads` will default to 30
-func NewBulkIt(c *http.Client, maxThreads int) *BulkIt {
+func NewBulkIt(c *http.Client, maxThreads int) *bulkItClient {
 	if c == nil {
 		c = &http.Client{}
 	}
@@ -37,17 +37,17 @@ func NewBulkIt(c *http.Client, maxThreads int) *BulkIt {
 		maxThreads = 30
 	}
 
-	h := &HTTPClient{
+	h := &httpClient{
 		client: c,
 	}
 
-	return &BulkIt{
+	return &bulkItClient{
 		client:     h,
 		maxThreads: maxThreads,
 	}
 }
 
-func (c *HTTPClient) GET(url string) (*http.Response, error) {
+func (c *httpClient) GET(url string) (*http.Response, error) {
 
 	req, err := http.NewRequest("GET", url, nil)
 
@@ -64,7 +64,7 @@ func (c *HTTPClient) GET(url string) (*http.Response, error) {
 	return resp, nil
 }
 
-func (im *BulkIt) SaveFilesByUrls(urls []string, path string) {
+func (im *bulkItClient) SaveFilesByUrls(urls []string, path string) {
 	startTime := time.Now()
 
 	c := goccm.New(im.maxThreads)
@@ -88,7 +88,7 @@ func (im *BulkIt) SaveFilesByUrls(urls []string, path string) {
 	logger.Info("Time Taken : " + time.Since(startTime).String())
 }
 
-func worker(client HTTPClient, url string, fPath string) (err error) {
+func worker(client httpClient, url string, fPath string) (err error) {
 	if url == "" {
 		return
 	}
