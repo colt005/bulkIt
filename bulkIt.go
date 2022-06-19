@@ -1,4 +1,4 @@
-package BulkIt
+package bulkIt
 
 import (
 	"errors"

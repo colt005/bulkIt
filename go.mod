@@ -1,4 +1,4 @@
-module github.com/colt005/BulkIt
+module github.com/colt005/bulkIt
 
 go 1.18
 
