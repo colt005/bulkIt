@@ -84,7 +84,7 @@ func (im *bulkItClient) SaveFilesByUrls(urls []string, path string) {
 		}(int64(i))
 	}
 	c.WaitAllDone()
-	logger.Info("%d of %d files downloaded successfully", counter, len(urls))
+	fmt.Printf("%d of %d files downloaded successfully", counter, len(urls))
 	logger.Info("Time Taken : " + time.Since(startTime).String())
 }
 
