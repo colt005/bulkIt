@@ -148,5 +148,8 @@ func getFileExtension(mimeType string) (extension string) {
 	if err != nil {
 		return
 	}
-	return ext[len(ext)-1]
+	if len(ext) > 0 {
+		return ext[len(ext)-1]
+	}
+	return ".png";
 }
