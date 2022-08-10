@@ -96,8 +96,10 @@ func worker(client httpClient, url string, fPath string) (err error) {
 	resp, err := client.GET(url)
 	if err != nil {
 		fmt.Println(err.Error())
-		resp.Body.Close()
-		return
+		if resp != nil {
+			resp.Body.Close()
+		}
+		return errors.New(`failed to download. Please check url`)
 	}
 	defer resp.Body.Close()
 	// fmt.Println(resp.Header)
@@ -109,14 +111,14 @@ func worker(client httpClient, url string, fPath string) (err error) {
 	bodyBytes, err := io.ReadAll(resp.Body)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return errors.New(`failed to download. Please check url`)
 	}
 	// detectedFileType := http.DetectContentType(bodyBytes)
 	detectedFileType := mimetype.Detect(bodyBytes).String()
 
 	if err != nil {
 		fmt.Println(err.Error())
-		return
+		return errors.New(`failed to download. Please check url`)
 	}
 
 	fName := uuid.New().String()
@@ -125,19 +127,19 @@ func worker(client httpClient, url string, fPath string) (err error) {
 	tmpPath := filepath.Join(fPath, fileName)
 	if getFileExtension(detectedFileType) == "" {
 		logger.Error("Failed to get file extension")
-		return
+		return errors.New(`failed to download. Please check url`)
 	}
 	newFile, err := os.Create(tmpPath)
 	if err != nil {
 		logger.Error(err.Error())
-		return
+		return errors.New(`failed to download. Please check url`)
 	}
 
 	defer newFile.Close()
 
 	if _, err = newFile.Write(bodyBytes); err != nil {
 		logger.Error(err.Error())
-		return
+		return errors.New(`failed to download. Please check url`)
 	}
 
 	return
@@ -151,5 +153,5 @@ func getFileExtension(mimeType string) (extension string) {
 	if len(ext) > 0 {
 		return ext[len(ext)-1]
 	}
-	return ".png";
+	return ".png"
 }
